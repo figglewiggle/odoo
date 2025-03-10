@@ -3,8 +3,15 @@
 [![Help](https://img.shields.io/badge/master-help-875A7B.svg?style=flat&colorA=8F8F8F)](https://www.odoo.com/forum/help-1)
 [![Nightly Builds](https://img.shields.io/badge/master-nightly-875A7B.svg?style=flat&colorA=8F8F8F)](https://nightly.odoo.com/)
 
-Odoo
-----
+# History Department Human Resources Platform
+This is our implementation of a Human Resouces Platform, based on Odoo.
+
+> Everyone can add their names here so we can be sure Git is working: <br />
+**- Evan**
+
+## CISC 498 Capstone Project
+
+## Odoo Information
 
 Odoo is a suite of web based open source business apps.
 
