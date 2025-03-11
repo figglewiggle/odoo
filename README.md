@@ -8,6 +8,7 @@ This is our implementation of a Human Resouces Platform, based on Odoo.
 
 > Everyone can add their names here so we can be sure Git is working: <br />
 **- Evan**
+**- Ethan**
 
 ## CISC 498 Capstone Project
 
