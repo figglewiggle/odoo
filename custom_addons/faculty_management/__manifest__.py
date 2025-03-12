@@ -1,0 +1,17 @@
+{
+    'name': 'Faculty Management',
+    'version': '1.0',
+    'category': 'Human Resources',
+    'summary': 'Manage faculty members in the history department',
+    'description': 'Custom module for managing faculty members.',
+    'author': 'Evan Ricketts',
+    'depends': ['base'],
+    'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
+        'views/faculty_member_views.xml',
+        'views/faculty_member_menus.xml',
+    ],
+    'installable': True,
+    'application': True,
+}

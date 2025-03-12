@@ -1,0 +1,1 @@
+# This file is required for Odoo to recognize this as a module.

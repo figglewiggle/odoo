@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="group_faculty_member" model="res.groups">
+        <field name="name">Faculty Member</field>
+    </record>    
+
+    <record id="group_faculty_admin" model="res.groups">
+        <field name="name">Faculty Admin</field>
+        <field name="implied_ids" eval="[(4, ref('faculty_management.group_faculty_member'))]"/>
+    </record>    
+
+</odoo>

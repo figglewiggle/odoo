@@ -1,0 +1,27 @@
+.o_main_navbar {
+    background-color: #B11D32 !important;
+}
+
+/* Change top navigation buttons */
+.o_control_panel {
+    background-color: white !important; /* Change this to any color you want */
+}
+
+/* Change buttons inside views (like create, save, etc.) */
+.btn-primary {
+    background-color: #18333D !important; /* Red */
+    border-color: #18333D!important; /* Darker Red */
+    color: white !important; /* Text color */
+}
+
+/* Change hover effect */
+.btn-primary:hover {
+    background-color: #93182b !important; /* Darker red on hover */
+}
+
+/* Change secondary buttons */
+.btn-secondary {
+    background-color: #B11D32 !important; /* Lighter Red */
+    color: white !important;
+}
+
