@@ -26,7 +26,6 @@
     </record>
 
 
-
     <record id="action_faculty_member" model="ir.actions.act_window">
         <field name="name">Faculty Member</field> 
         <field name="res_model">faculty.member</field>
