@@ -6,7 +6,9 @@
         <field name="model">faculty.member</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name"/> 
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="email"/>
             </list>
         </field>
     </record>
@@ -18,7 +20,36 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="name"/> 
+                        <field name="name"/>
+                        <field name="employee_id"/>
+                        <field name="email"/>
+                        <field name="years_of_service"/>
+                        <field name="fte"/>
+                    </group>
+                    <group>
+                        <field name="last_academic_leave"/>
+                        <field name="next_eligible_leave"/>
+                        <field name="negotiated_leave"/>
+                    </group>
+                    <group>
+                        <field name="grants_held"/>
+                        <field name="current_grants"/>
+                    </group>
+                    <group>
+                        <field name="courses_taught"/>
+                        <field name="courses_current_year"/>
+                        <field name="teaching_release"/>
+                    </group>
+                    <group>
+                        <field name="past_supervision_ba"/>
+                        <field name="past_supervision_ma"/>
+                        <field name="past_supervision_phd"/>
+                        <field name="current_supervision"/>
+                    </group>
+                    <group>
+                        <field name="service_duties"/>
+                        <field name="major_service_duties"/>
+                        <field name="current_service"/>
                     </group>
                 </sheet>
             </form>
