@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <!-- List View -->
+    <record id="faculty_leave_list_view" model="ir.ui.view">
+        <field name="name">faculty.leave.list.view</field>
+        <field name="model">faculty.leave</field>
+        <field name="arch" type="xml">
+            <list string="Faculty Leave Requests">
+                <field name="faculty_id"/>
+                <field name="leave_type"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="faculty_leave_form_view" model="ir.ui.view">
+        <field name="name">faculty.leave.form.view</field>
+        <field name="model">faculty.leave</field>
+        <field name="arch" type="xml">
+            <form string="Faculty Leave Request">
+                <sheet>
+                    <group>
+                        <field name="faculty_id" domain="[('user_id', '=', uid)]" readonly="1"/>
+                        <field name="leave_type"/>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="reason"/>
+                        <field name="state" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_submit" type="object" string="Submit" class="btn-primary"
+                            modifiers="{'invisible': [('state', '!=', 'draft')]}"/>
+                        <button name="action_approve" type="object" string="Approve" class="btn-success"
+                            modifiers="{'invisible': [('state', '!=', 'submitted')]}"/>
+                        <button name="action_reject" type="object" string="Reject" class="btn-danger"
+                            modifiers="{'invisible': [('state', '!=', 'submitted')]}"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_faculty_leave" model="ir.actions.act_window">
+        <field name="name">Leave Requests</field>
+        <field name="res_model">faculty.leave</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+    </record>
+</odoo>

@@ -1,1 +1,1 @@
-from . import faculty_member
+from . import faculty_member, faculty_leave

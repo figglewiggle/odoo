@@ -3,5 +3,6 @@
 <odoo>
     <menuitem id="menu_faculty" name="Faculty">
         <menuitem id="menu_faculty_members" name="Faculty Members" action="faculty_management.action_faculty_member"/>
+        <menuitem id="menu_faculty_leave" name="Leave Requests" action="faculty_management.action_faculty_leave"/>
     </menuitem>
 </odoo>

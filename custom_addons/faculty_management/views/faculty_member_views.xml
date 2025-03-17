@@ -23,6 +23,7 @@
                         <field name="name"/>
                         <field name="employee_id"/>
                         <field name="email"/>
+                        <field name="user_id" readonly="1"/>  <!-- Display Odoo user -->
                         <field name="years_of_service"/>
                         <field name="fte"/>
                     </group>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="faculty_leave_own_rule" model="ir.rule">
+        <field name="name">Faculty Leave: View Own Requests</field>
+        <field name="model_id" ref="model_faculty_leave"/>
+        <field name="domain_force">[('faculty_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('faculty_management.group_faculty_member'))]"/>
+    </record>
+
+    <record id="faculty_leave_admin_rule" model="ir.rule">
+        <field name="name">Faculty Admin: Manage All Requests</field>
+        <field name="model_id" ref="model_faculty_leave"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('faculty_management.group_faculty_admin'))]"/>
+    </record>
+</odoo>

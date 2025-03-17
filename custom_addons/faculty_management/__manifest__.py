@@ -9,7 +9,10 @@
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'security/faculty_member_security.xml',
+        'security/faculty_leave_security.xml',
         'views/faculty_member_views.xml',
+        'views/faculty_leave_views.xml',
         'views/faculty_member_menus.xml',
     ],
     'installable': True,
