@@ -44,11 +44,32 @@
         </field>
     </record>
 
+    <record id="student_view_calendar" model="ir.ui.view">
+        <field name="name">faculty.leave.view.calendar</field>
+        <field name="model">faculty.leave</field>
+        <field name="arch" type="xml">
+            <calendar   date_stop="end_date"
+                        date_start="start_date"
+                        string="Faculty Leave"
+                        color="faculty_id"
+                        event_open_popup="true"
+                        quick_create="0"
+                        mode="year"
+            >
+                <field name="faculty_id" domain="[('user_id', '=', uid)]" readonly="1"/>
+                <field name="leave_type"/>
+                <field name="reason"/>
+                <field name="state" readonly="1"/>
+            </calendar>
+        </field>
+    </record>
+
+
     <!-- Action -->
     <record id="action_faculty_leave" model="ir.actions.act_window">
         <field name="name">Leave Requests</field>
         <field name="res_model">faculty.leave</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,calendar</field>
         <field name="domain">[]</field>
     </record>
 </odoo>
