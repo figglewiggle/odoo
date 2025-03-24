@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- views/faculty_onboarding_view.xml -->
+<odoo>
+  <data>
+    <record id="view_faculty_onboarding_form" model="ir.ui.view">
+      <field name="name">faculty.onboarding.form</field>
+      <field name="model">faculty.onboarding</field>
+      <field name="arch" type="xml">
+        <form string="Faculty Onboarding">
+          <group>
+            <field name="email" />
+            <field name="name" />
+          </group>
+          <footer>
+            <button string="Send Invite" type="object" name="action_send_invite" class="btn-primary" />
+            <button string="Cancel" class="btn-secondary" special="cancel" />
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <record id="action_faculty_onboarding" model="ir.actions.act_window">
+      <field name="name">Faculty Onboarding</field>
+      <field name="res_model">faculty.onboarding</field>
+      <field name="view_mode">form</field>
+      <field name="target">new</field>
+    </record>
+  </data>
+</odoo>

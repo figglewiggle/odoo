@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <odoo>
-    <menuitem id="menu_faculty" name="Faculty">
-        <menuitem id="menu_faculty_members" name="Faculty Members" action="faculty_management.action_faculty_member"/>
-        <menuitem id="menu_faculty_leave" name="Leave Requests" action="faculty_management.action_faculty_leave"/>
-    </menuitem>
+
+    <!-- Define the menus (ensure the action now exists) -->
+    <menuitem id="menu_faculty" name="Faculty" />
+    <menuitem id="menu_faculty_members" name="Faculty Members" parent="menu_faculty"
+        action="faculty_management.action_faculty_member" />
+    <menuitem id="menu_faculty_leave" name="Leave Requests" parent="menu_faculty"
+        action="faculty_management.action_faculty_leave" />
+    <menuitem id="menu_faculty_onboarding" name="Faculty Onboarding" parent="menu_faculty"
+        action="faculty_management.action_faculty_onboarding" />
 </odoo>

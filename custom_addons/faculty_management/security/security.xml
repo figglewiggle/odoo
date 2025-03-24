@@ -60,14 +60,22 @@
         <field name="perm_unlink" eval="True"/>
         <field name="domain_force">[]</field>
     </record>
-
-
-
-
-
-
-
-
+    <data noupdate="1">
+        <record id="faculty_onboarding_rule_admin" model="ir.rule">
+            <field name="name">Faculty Onboarding: Only Faculty Admins</field>
+            <!-- Use the external id for the model; Odoo automatically creates an external id 
+            in the format "module_name.model_modelname" (all lowercase) if not provided -->
+            <field name="model_id" ref="faculty_management.model_faculty_onboarding"/>
+            <field name="global" eval="False"/>
+            <field name="groups" eval="[(4, ref('faculty_management.group_faculty_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <!-- A domain that always returns True; this rule will force access only to faculty admins -->
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+    </data>
 
 
 

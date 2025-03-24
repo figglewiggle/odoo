@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- views/faculty_signup_templates.xml -->
+<odoo>
+  <template id="faculty_signup_page" name="Faculty Signup Page">
+    <t t-call="web.layout">
+      <div class="container">
+        <h1>Complete your Registration</h1>
+        <t t-if="error">
+          <div class="alert alert-danger">
+            <t t-esc="error" />
+          </div>
+        </t>
+        <form action="/signup/confirm" method="post">
+          <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+          <input type="hidden" name="token" t-att-value="token" />
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" class="form-control" required="required" />
+          </div>
+          <button type="submit" class="btn btn-primary">Set Password and Complete Registration</button>
+        </form>
+      </div>
+    </t>
+  </template>
+
+  <template id="faculty_signup_success" name="Faculty Signup Success">
+    <t t-call="web.layout">
+      <div class="container">
+        <h1>Registration Successful</h1>
+        <p>Your account has been created successfully. You can now log in.</p>
+        <a href="/web/login" class="btn btn-primary">Login</a>
+      </div>
+    </t>
+  </template>
+</odoo>

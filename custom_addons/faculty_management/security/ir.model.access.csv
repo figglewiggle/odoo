@@ -5,3 +5,5 @@ access_faculty_leave_member,access.faculty.leave.member,model_faculty_leave,facu
 access_faculty_leave_admin,access.faculty.leave.admin,model_faculty_leave,faculty_management.group_faculty_admin,1,1,1,1
 access_faculty_users,access.faculty.users,base.model_res_users,faculty_management.group_faculty_member,1,0,0,0
 access_faculty_partner,access.faculty.partner,base.model_res_partner,faculty_management.group_faculty_member,1,0,0,0
+access_faculty_onboarding,access.faculty.onboarding,model_faculty_onboarding,base.group_user,1,0,1,0
+
