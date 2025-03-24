@@ -51,7 +51,7 @@
             <calendar   date_stop="end_date"
                         date_start="start_date"
                         string="Faculty Leave"
-                        color="faculty_id"
+                        color="state"
                         event_open_popup="true"
                         quick_create="0"
                         mode="year"
