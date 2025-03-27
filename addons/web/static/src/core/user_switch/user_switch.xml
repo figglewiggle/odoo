@@ -12,7 +12,6 @@
                                     <img class="o_avatar o_user_avatar rounded me-2" t-attf-src="{{getAvatarUrl(user)}}" t-att-alt="user.login"/>
                                     <t t-esc="user.name" />
                                 </span>
-                                <i class="fa fa-times" title="Remove user from switcher" t-on-click.stop="() => this.remove(user)"/>
                             </button>
                         </t>
                     </div>

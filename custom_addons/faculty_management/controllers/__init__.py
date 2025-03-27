@@ -1,1 +1,1 @@
-from . import faculty_signup_controller
+from . import faculty_signup_controller, active_user_controller

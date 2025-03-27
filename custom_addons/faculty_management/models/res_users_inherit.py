@@ -25,7 +25,7 @@ class ResUsers(models.Model):
                         FacultyMember.create({
                             'name': user.name,
                             'email': user.email,
-                            'employee_id': env['ir.sequence'].next_by_code('faculty.member') or 'NEW',
+                            'employee_id': env['ir.sequence'].next_by_code('faculty.member'),
                             'user_id': user.id,
                         })
                     # Optionally add the user to a group

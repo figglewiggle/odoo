@@ -2,7 +2,7 @@
 <!-- views/faculty_signup_templates.xml -->
 <odoo>
   <template id="faculty_signup_page" name="Faculty Signup Page">
-    <t t-call="web.layout">
+    <t t-call="web.layout" model="ir.ui.view">
       <div class="container">
         <h1>Complete your Registration</h1>
         <t t-if="error">

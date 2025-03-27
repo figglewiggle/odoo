@@ -41,8 +41,8 @@ class FacultyMember(models.Model):
         """
         Called when a signup occurs via an onboarding link or during import.
         If a faculty record exists:
-          - If it already has a user, record an import note instead of raising an exception.
-          - Otherwise, update the record.
+        - If it already has a user, record an import note instead of raising an exception.
+        - Otherwise, update the record with allowed fields.
         Otherwise, create a new record.
         """
         email = signup_vals.get('email')
@@ -51,19 +51,33 @@ class FacultyMember(models.Model):
 
         faculty = self.search([('email', '=', email)], limit=1)
         if faculty:
-            # Instead of stopping the process, update with an import note if a user exists.
             if faculty.user_id:
+                # If a user is already linked, record a note and return the record.
                 faculty.sudo().write({
                     'import_note': "A user account has already been created for this faculty member."
                 })
                 return faculty
             else:
-                faculty.write({
-                    'name': signup_vals.get('name', faculty.name),
-                    # Update additional fields as needed.
-                })
+                # List the fields that you want to allow updates for during onboarding.
+                allowed_fields = [
+                    'name', 'years_of_service', 'fte', 'last_academic_leave',
+                    'next_eligible_leave', 'negotiated_leave', 'grants_held',
+                    'current_grants', 'courses_taught', 'courses_current_year',
+                    'teaching_release', 'past_supervision_ba', 'past_supervision_ma',
+                    'past_supervision_phd', 'current_supervision', 'service_duties',
+                    'major_service_duties', 'current_service'
+                ]
+                update_vals = {}
+                # Only update fields present in signup_vals (if any).
+                for key in allowed_fields:
+                    if key in signup_vals:
+                        update_vals[key] = signup_vals[key]
+                # Always update the name if provided.
+                update_vals.setdefault('name', signup_vals.get('name', faculty.name))
+                if update_vals:
+                    faculty.write(update_vals)
         else:
-            # Use super() to avoid recursion and create a new record.
+            # Create a new record using super() to avoid recursion.
             faculty = super(FacultyMember, self).create({
                 'name': signup_vals.get('name'),
                 'email': email,
@@ -71,13 +85,15 @@ class FacultyMember(models.Model):
             })
         return faculty
 
+
     @api.model_create_multi
     def create(self, vals_list):
         """
-        Overrides record creation during import to:
-          1. Process each record individually using link_or_create_onboarding.
-          2. Run the onboarding logic if applicable.
-          3. Catch exceptions per record, allowing partial failures.
+        Overrides record creation during import (or manual creation) to:
+        1. Process each record individually using link_or_create_onboarding.
+        2. Run the onboarding logic if applicable.
+        3. Catch exceptions per record, allowing partial failures.
+        4. Only send the invite if the context does not disable it.
         """
         records = self.env['faculty.member']
         for vals in vals_list:
@@ -85,13 +101,13 @@ class FacultyMember(models.Model):
                 rec = self.link_or_create_onboarding(vals)
             except Exception as e:
                 _logger.warning("Record creation failed for email %s: %s", vals.get('email'), e)
-                # Optionally: if you want, you could create a dummy record with an import note.
                 continue
 
             records |= rec
 
-            # If the record has an email and is not yet linked to a user, attempt onboarding.
-            if rec.email and not rec.user_id:
+            # For CSV import and manual creation, check if we want to disable automatic invites.
+            # The onboarding portal should always send the invite.
+            if rec.email and not rec.user_id and not self.env.context.get('disable_onboarding', False):
                 try:
                     onboard_faculty_record(self.env, rec)
                 except Exception as e:
@@ -99,6 +115,7 @@ class FacultyMember(models.Model):
                     rec.sudo().write({'import_note': str(e)})
 
         return records
+
 
     def update_user_link(self, user_id):
         """
