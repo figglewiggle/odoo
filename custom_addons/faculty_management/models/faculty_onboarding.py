@@ -16,10 +16,6 @@ def onboard_faculty_record(env, faculty):
     """
     if not faculty.email:
         raise ValidationError(_("No email set on faculty record."))
-    
-    # Prevent duplicate invites: if a signup_token already exists, do nothing.
-    if faculty.signup_token:
-        return
 
     # Check if a res.users record with that email already exists.
     existing_user = env['res.users'].sudo().search([('login', '=', faculty.email)], limit=1)

@@ -30,6 +30,15 @@
         <p>Your account has been created successfully. You can now log in.</p>
         <a href="/web/login" class="btn btn-primary">Login</a>
       </div>
+      <script type="text/javascript"> (function(){ // new_user_info is passed from the controller
+        var newUser = <t t-raw="json.dumps(new_user_info)" />; var lastConnectedUsers =
+        localStorage.getItem("web.lastConnectedUser"); lastConnectedUsers = lastConnectedUsers ?
+        JSON.parse(lastConnectedUsers) : []; // Remove any existing entry for this user
+        lastConnectedUsers = lastConnectedUsers.filter(function(u) { return u.userId !=
+        newUser.userId; }); // Add new user at the beginning of the array
+        lastConnectedUsers.unshift(newUser); // Limit the list to the 5 most recent users
+        localStorage.setItem("web.lastConnectedUser", JSON.stringify(lastConnectedUsers.slice(0,
+        5))); })(); </script>
     </t>
   </template>
 </odoo>

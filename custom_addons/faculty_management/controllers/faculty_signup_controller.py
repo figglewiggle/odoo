@@ -113,6 +113,7 @@ class FacultySignupController(http.Controller):
             'login': faculty.email,
             'email': faculty.email,
             'password': password,
+            'active': True,
             'groups_id': [(6, 0, [faculty_group.id, internal_group.id])],
         }
         try:
@@ -125,4 +126,11 @@ class FacultySignupController(http.Controller):
 
         # Link the newly created user
         faculty.update_user_link(new_user.id)
-        return request.render("faculty_management.faculty_signup_success", {'faculty': faculty})
+        new_user_info = {
+            'login': new_user.login,
+            'name': new_user.name,
+            'partnerId': new_user.partner_id.id if new_user.partner_id else False,
+            'partnerWriteDate': new_user.partner_id.write_date and fields.Datetime.to_string(new_user.partner_id.write_date) or '',
+            'userId': new_user.id,
+        }
+        return request.render("faculty_management.faculty_signup_success", {'faculty': faculty, 'new_user_info': new_user_info})

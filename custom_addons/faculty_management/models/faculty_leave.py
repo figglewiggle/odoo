@@ -20,7 +20,7 @@ class FacultyLeave(models.Model):
         ('approved', 'Approved'),
         ('rejected', 'Rejected')
     ], string="Status", default="draft")
-    user_id = fields.Many2one('res.users', string="Requested By", default=lambda self: self.env.user, readonly=True)
+    user_id = fields.Many2one('res.users', string="Requested By", default=lambda self: self.env.user, readonly=True, ondelete="cascade")
 
     ## Auto-assign the faculty member based on the logged-in user
     @api.model
