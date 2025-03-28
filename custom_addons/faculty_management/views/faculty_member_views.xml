@@ -6,9 +6,16 @@
         <field name="model">faculty.member</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name"/>
-                <field name="employee_id"/>
-                <field name="email"/>
+                <header>
+                    <button name="action_invite_all"
+                        string="Invite All Unlinked"
+                        type="object"
+                        class="oe_highlight" />
+                </header>
+                <field name="name" />
+                <field name="employee_id" />
+                <field name="email" />
+                <button name="action_invite" type="object" string="Invite" invisible="user_id" />
             </list>
         </field>
     </record>
@@ -20,37 +27,37 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="employee_id"/>
-                        <field name="email"/>
-                        <field name="user_id" readonly="1"/>  <!-- Display Odoo user -->
-                        <field name="years_of_service"/>
-                        <field name="fte"/>
+                        <field name="name" />
+                        <field name="employee_id" />
+                        <field name="email" />
+                        <field name="user_id" readonly="1" />  <!-- Display Odoo user -->
+                        <field name="years_of_service" />
+                        <field name="fte" />
                     </group>
                     <group>
-                        <field name="last_academic_leave"/>
-                        <field name="next_eligible_leave"/>
-                        <field name="negotiated_leave"/>
+                        <field name="last_academic_leave" />
+                        <field name="next_eligible_leave" />
+                        <field name="negotiated_leave" />
                     </group>
                     <group>
-                        <field name="grants_held"/>
-                        <field name="current_grants"/>
+                        <field name="grants_held" />
+                        <field name="current_grants" />
                     </group>
                     <group>
-                        <field name="courses_taught"/>
-                        <field name="courses_current_year"/>
-                        <field name="teaching_release"/>
+                        <field name="courses_taught" />
+                        <field name="courses_current_year" />
+                        <field name="teaching_release" />
                     </group>
                     <group>
-                        <field name="past_supervision_ba"/>
-                        <field name="past_supervision_ma"/>
-                        <field name="past_supervision_phd"/>
-                        <field name="current_supervision"/>
+                        <field name="past_supervision_ba" />
+                        <field name="past_supervision_ma" />
+                        <field name="past_supervision_phd" />
+                        <field name="current_supervision" />
                     </group>
                     <group>
-                        <field name="service_duties"/>
-                        <field name="major_service_duties"/>
-                        <field name="current_service"/>
+                        <field name="service_duties" />
+                        <field name="major_service_duties" />
+                        <field name="current_service" />
                     </group>
                 </sheet>
             </form>
@@ -59,9 +66,9 @@
 
 
     <record id="action_faculty_member" model="ir.actions.act_window">
-        <field name="name">Faculty Member</field> 
+        <field name="name">Faculty Member</field>
         <field name="res_model">faculty.member</field>
-        <field name ="view_mode">list,form</field>  
+        <field name="view_mode">list,form</field>
         <field name="context">{'default_disable_onboarding': True, 'disable_onboarding': True}</field>
     </record>
 </odoo>

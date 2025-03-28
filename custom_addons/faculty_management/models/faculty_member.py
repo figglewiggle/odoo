@@ -131,3 +131,32 @@ class FacultyMember(models.Model):
             if faculty.user_id:
                 faculty.user_id.unlink()
         return super(FacultyMember, self).unlink()
+    
+    def action_invite(self):
+        """
+        Manually send an invite for onboarding if no user is linked.
+        This method is called from the list view button.
+        """
+        self.ensure_one()
+        if self.user_id:
+            raise ValidationError("User account already exists for this faculty member.")
+        try:
+            onboard_faculty_record(self.env, self)
+        except Exception as e:
+            _logger.warning("Manual onboarding invite failed for [%s, email=%s]: %s", self.name, self.email, e)
+            self.sudo().write({'import_note': str(e)})
+        return True
+    
+    def action_invite_all(self):
+        """Send onboarding invites to all faculty members who have no linked user."""
+        unlinked = self.search([('user_id', '=', False)])
+        for rec in unlinked:
+            try:
+                onboard_faculty_record(self.env, rec)
+            except Exception as e:
+                _logger.warning("Invite failed for %s (email=%s): %s", rec.name, rec.email, e)
+                rec.sudo().write({'import_note': f"Invite error: {e}"})
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
