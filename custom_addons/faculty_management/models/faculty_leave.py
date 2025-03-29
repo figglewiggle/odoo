@@ -4,6 +4,7 @@ from odoo.exceptions import ValidationError
 class FacultyLeave(models.Model):
     _name = "faculty.leave"
     _description = "Faculty Leave Request"
+    _rec_name = "user_id"
 
     faculty_id = fields.Many2one("faculty.member", string="Faculty Member", required=True, default=lambda self: self.get_current_faculty())
     leave_type = fields.Selection([

@@ -56,6 +56,7 @@
                         quick_create="0"
                         mode="year"
             >
+                <field name="user_id"/>
                 <field name="faculty_id" domain="[('user_id', '=', uid)]" readonly="1"/>
                 <field name="leave_type"/>
                 <field name="reason"/>
