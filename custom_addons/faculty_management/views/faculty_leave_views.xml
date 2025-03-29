@@ -33,10 +33,13 @@
                     </group>
                     <footer>
                         <button name="action_submit" type="object" string="Submit" class="btn-primary"
+                            groups="faculty_management.group_faculty_admin"
                             modifiers="{'invisible': [('state', '!=', 'draft')]}"/>
                         <button name="action_approve" type="object" string="Approve" class="btn-success"
+                            groups="faculty_management.group_faculty_admin"
                             modifiers="{'invisible': [('state', '!=', 'submitted')]}"/>
                         <button name="action_reject" type="object" string="Reject" class="btn-danger"
+                            groups="faculty_management.group_faculty_admin"
                             modifiers="{'invisible': [('state', '!=', 'submitted')]}"/>
                     </footer>
                 </sheet>
