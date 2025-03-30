@@ -17,10 +17,7 @@
                 <field name="name" />
                 <field name="employee_id" />
                 <field name="email" widget="email" />
-                <field name="years_of_service" />
-                <field name="current_grants" />
-                <field name="courses_current_year" />
-                <field name="user_id" invisible="1" />
+                <field name="user_id"/>
                 <button name="action_invite" 
                         type="object" 
                         string="Send Invitation" 
