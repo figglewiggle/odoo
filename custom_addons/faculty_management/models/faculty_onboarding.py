@@ -1,10 +1,6 @@
-# faculty_onboarding.py
-
 import secrets
-import smtplib
+import requests  # For making HTTP requests
 from dateutil.relativedelta import relativedelta
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
@@ -41,30 +37,40 @@ def onboard_faculty_record(env, faculty):
     <p><a href="{signup_url}">Complete Registration</a></p>
     <p>If you did not expect this invitation, please ignore this email.</p>
     """
-    email_from = env['ir.config_parameter'].sudo().get_param('mail.catchall.default') or 'noreply@example.com'
+    # Use the catchall email or default to a verified sender address.
+    email_from = env['ir.config_parameter'].sudo().get_param('mail.catchall.default') or '20eaf4@queensu.ca'
 
-    _send_email(email_from, faculty.email, subject, body_html)
+    _send_email(email_from, faculty.email, subject, body_html, env)
 
 
-def _send_email(email_from, email_to, subject, body_html):
+def _send_email(email_from, email_to, subject, body_html, env):
     """
-    The shared SMTP logic. 
-    Identical to your wizard's _send_email, but as a top-level function.
+    Sends an email using the Mailgun API instead of a local SMTP server.
     """
-    msg = MIMEMultipart('alternative')
-    msg['Subject'] = subject
-    msg['From'] = email_from
-    msg['To'] = email_to
+    # Retrieve Mailgun API key and domain from configuration parameters
+    mailgun_api_key = env['ir.config_parameter'].sudo().get_param('mailgun.api_key')
+    mailgun_domain = env['ir.config_parameter'].sudo().get_param('mailgun.domain')
+    if not mailgun_api_key or not mailgun_domain:
+        raise ValidationError(_("Mailgun API key or domain is not configured."))
 
-    part = MIMEText(body_html, 'html')
-    msg.attach(part)
+    url = f"https://api.mailgun.net/v3/{mailgun_domain}/messages"
+    payload = {
+        "from": email_from,
+        "to": email_to,
+        "subject": subject,
+        "html": body_html
+    }
 
     try:
-        smtp = smtplib.SMTP('localhost', 1025)
-        smtp.sendmail(email_from, [email_to], msg.as_string())
-        smtp.quit()
+        response = requests.post(url, auth=("api", mailgun_api_key), data=payload, timeout=10)
+        response.raise_for_status()  # Raise an HTTPError for bad responses
+        result = response.json()
+        # Mailgun returns an 'id' in the response if successful.
+        if not result.get("id"):
+            raise ValidationError(_("Mailgun error: %s") % result)
     except Exception as e:
-        raise ValidationError(_("Failed to send email: %s") % e)
+        error_details = response.text if response is not None else 'No response'
+        raise ValidationError(_("Failed to send email via Mailgun: %s. Details: %s") % (e, error_details))
 
 
 class FacultyOnboarding(models.TransientModel):

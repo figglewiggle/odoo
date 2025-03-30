@@ -1,44 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- views/faculty_signup_templates.xml -->
 <odoo>
   <template id="faculty_signup_page" name="Faculty Signup Page">
-    <t t-call="web.layout" model="ir.ui.view">
+    <t t-call="web.login_layout">
       <div class="container">
-        <h1>Complete your Registration</h1>
-        <t t-if="error">
-          <div class="alert alert-danger">
-            <t t-esc="error" />
+        <div class="row justify-content-center">
+          <!-- Expanded to full width (12 columns) -->
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <h3 class="text-center mb16">Complete your Registration</h3>
+            <t t-if="error">
+              <div class="alert alert-danger">
+                <t t-esc="error"/>
+              </div>
+            </t>
+            <form action="/signup/confirm" method="post">
+              <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+              <input type="hidden" name="token" t-att-value="token"/>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" class="form-control" required="required"/>
+              </div>
+              <div class="form-group text-center mt16">
+                <button type="submit" class="btn btn-primary">
+                  Sign Up
+                </button>
+              </div>
+            </form>
           </div>
-        </t>
-        <form action="/signup/confirm" method="post">
-          <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-          <input type="hidden" name="token" t-att-value="token" />
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" name="password" class="form-control" required="required" />
-          </div>
-          <button type="submit" class="btn btn-primary">Set Password and Complete Registration</button>
-        </form>
+        </div>
       </div>
     </t>
   </template>
 
   <template id="faculty_signup_success" name="Faculty Signup Success">
-    <t t-call="web.layout">
+    <t t-call="web.login_layout">
       <div class="container">
-        <h1>Registration Successful</h1>
-        <p>Your account has been created successfully. You can now log in.</p>
-        <a href="/web/login" class="btn btn-primary">Login</a>
+        <div class="row justify-content-center">
+          <!-- Expanded to full width (12 columns) -->
+          <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+            <h3 class="mb16">Registration Successful</h3>
+            <p>Your account has been created successfully. You can now log in.</p>
+            <a href="/web/login" class="btn btn-primary">Login</a>
+          </div>
+        </div>
       </div>
-      <script type="text/javascript"> (function(){ // new_user_info is passed from the controller
-        var newUser = <t t-raw="json.dumps(new_user_info)" />; var lastConnectedUsers =
-        localStorage.getItem("web.lastConnectedUser"); lastConnectedUsers = lastConnectedUsers ?
-        JSON.parse(lastConnectedUsers) : []; // Remove any existing entry for this user
-        lastConnectedUsers = lastConnectedUsers.filter(function(u) { return u.userId !=
-        newUser.userId; }); // Add new user at the beginning of the array
-        lastConnectedUsers.unshift(newUser); // Limit the list to the 5 most recent users
-        localStorage.setItem("web.lastConnectedUser", JSON.stringify(lastConnectedUsers.slice(0,
-        5))); })(); </script>
+      <script type="text/javascript">
+        (function(){
+          var newUser = <t t-raw="json.dumps(new_user_info)" />;
+          var lastConnectedUsers = localStorage.getItem("web.lastConnectedUser");
+          lastConnectedUsers = lastConnectedUsers ? JSON.parse(lastConnectedUsers) : [];
+          lastConnectedUsers = lastConnectedUsers.filter(function(u) {
+              return u.userId != newUser.userId;
+          });
+          lastConnectedUsers.unshift(newUser);
+          localStorage.setItem("web.lastConnectedUser", JSON.stringify(lastConnectedUsers.slice(0, 5)));
+        })();
+      </script>
     </t>
   </template>
 </odoo>
