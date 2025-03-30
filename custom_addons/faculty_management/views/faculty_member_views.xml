@@ -1,74 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <odoo>
+    <!-- List View Improvements -->
     <record id="faculty_member_list_view" model="ir.ui.view">
         <field name="name">faculty.member.list.view</field>
         <field name="model">faculty.member</field>
         <field name="arch" type="xml">
-            <list>
+            <list decoration-info="not user_id" decoration-muted="user_id" string="Faculty Members">
                 <header>
                     <button name="action_invite_all"
-                        string="Invite All Unlinked"
-                        type="object"
-                        class="oe_highlight" />
+                            string="Invite All Unlinked"
+                            type="object"
+                            icon="fa-envelope"
+                            class="btn-primary" />
                 </header>
                 <field name="name" />
                 <field name="employee_id" />
-                <field name="email" />
-                <button name="action_invite" type="object" string="Invite" invisible="user_id" />
+                <field name="email" widget="email" />
+                <field name="years_of_service" />
+                <field name="current_grants" />
+                <field name="courses_current_year" />
+                <field name="user_id" invisible="1" />
+                <button name="action_invite" 
+                        type="object" 
+                        string="Send Invitation" 
+                        icon="fa-user-plus"
+                        class="btn-secondary"
+                        invisible="user_id" />
             </list>
         </field>
     </record>
 
+    <!-- Form View Improvements -->
     <record id="faculty_member_form_view" model="ir.ui.view">
         <field name="name">faculty.member.form.view</field>
         <field name="model">faculty.member</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="Faculty Member">
+                <header>
+                    <button name="action_invite" 
+                            type="object" 
+                            string="Send User Invitation" 
+                            class="btn-primary"
+                            invisible="user_id" />
+                </header>
                 <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" />
+                        <h1><field name="name" placeholder="Faculty Name" /></h1>
+                    </div>
+                    
                     <group>
-                        <field name="name" />
-                        <field name="employee_id" />
-                        <field name="email" />
-                        <field name="user_id" readonly="1" />  <!-- Display Odoo user -->
-                        <field name="years_of_service" />
-                        <field name="fte" />
+                        <group>
+                            <field name="employee_id" />
+                            <field name="email" widget="email" />
+                            <field name="user_id" readonly="1" />
+                        </group>
+                        <group>
+                            <field name="years_of_service" />
+                            <field name="fte" widget="percentage" />
+                        </group>
                     </group>
-                    <group>
-                        <field name="last_academic_leave" />
-                        <field name="next_eligible_leave" />
-                        <field name="negotiated_leave" />
-                    </group>
-                    <group>
-                        <field name="grants_held" />
-                        <field name="current_grants" />
-                    </group>
-                    <group>
-                        <field name="courses_taught" />
-                        <field name="courses_current_year" />
-                        <field name="teaching_release" />
-                    </group>
-                    <group>
-                        <field name="past_supervision_ba" />
-                        <field name="past_supervision_ma" />
-                        <field name="past_supervision_phd" />
-                        <field name="current_supervision" />
-                    </group>
-                    <group>
-                        <field name="service_duties" />
-                        <field name="major_service_duties" />
-                        <field name="current_service" />
-                    </group>
+                    
+                    <notebook>
+                        <page string="Academic Leave" name="academic_leave">
+                            <group>
+                                <field name="last_academic_leave" />
+                                <field name="next_eligible_leave" />
+                                <field name="negotiated_leave" />
+                            </group>
+                        </page>
+                        
+                        <page string="Grants" name="grants">
+                            <group>
+                                <field name="grants_held" />
+                                <field name="current_grants" />
+                            </group>
+                        </page>
+                        
+                        <page string="Teaching" name="teaching">
+                            <group>
+                                <field name="courses_taught" />
+                                <field name="courses_current_year" />
+                                <field name="teaching_release" />
+                            </group>
+                        </page>
+                        
+                        <page string="Supervision" name="supervision">
+                            <group>
+                                <field name="past_supervision_ba" />
+                                <field name="past_supervision_ma" />
+                                <field name="past_supervision_phd" />
+                                <field name="current_supervision" />
+                            </group>
+                        </page>
+                        
+                        <page string="Service" name="service">
+                            <group>
+                                <field name="service_duties" />
+                                <field name="major_service_duties" />
+                                <field name="current_service" />
+                            </group>
+                        </page>
+                        
+                        <page string="System" name="system" groups="base.group_system">
+                            <group>
+                                <field name="signup_token" />
+                                <field name="signup_token_expiration" />
+                                <field name="import_note" />
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
     </record>
 
+    <!-- Search View -->
+    <record id="faculty_member_search_view" model="ir.ui.view">
+        <field name="name">faculty.member.search</field>
+        <field name="model">faculty.member</field>
+        <field name="arch" type="xml">
+            <search string="Search Faculty">
+                <field name="name" filter_domain="['|', ('name', 'ilike', self), ('email', 'ilike', self)]" />
+                <field name="employee_id" />
+                <separator />
+                <filter string="No Odoo Account" name="no_user" domain="[('user_id', '=', False)]" />
+                <filter string="With Current Grants" name="with_grants" domain="[('current_grants', '!=', False)]" />
+                <filter string="Teaching This Year" name="teaching" domain="[('courses_current_year', '!=', False)]" />
+                <filter string="Eligible for Leave" name="eligible_leave" domain="[('next_eligible_leave', '&lt;=', context_today().strftime('%Y-%m-%d'))]" />
+                <group expand="0" string="Group By">
+                    <filter string="Years of Service" name="group_by_years" context="{'group_by': 'years_of_service'}" />
+                </group>
+            </search>
+        </field>
+    </record>
 
+    <!-- Action -->
     <record id="action_faculty_member" model="ir.actions.act_window">
-        <field name="name">Faculty Member</field>
+        <field name="name">Faculty Members</field>
         <field name="res_model">faculty.member</field>
         <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="faculty_member_search_view" />
         <field name="context">{'default_disable_onboarding': True, 'disable_onboarding': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first faculty member
+            </p>
+            <p>
+                Add faculty members to track academic information, courses, grants, and service duties.
+            </p>
+        </field>
     </record>
 </odoo>
