@@ -32,7 +32,7 @@
                         <field name="state" readonly="1"/>
                     </group>
                     <footer>
-                        <button name="action_submit" type="object" string="Submit" class="btn-primary"
+                        <button name="action_submit" type="object" string="Clear" class="btn-primary"
                             groups="faculty_management.group_faculty_admin"
                             modifiers="{'invisible': [('state', '!=', 'draft')]}"/>
                         <button name="action_approve" type="object" string="Approve" class="btn-success"
