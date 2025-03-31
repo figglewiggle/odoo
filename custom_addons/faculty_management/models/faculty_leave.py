@@ -49,3 +49,9 @@ class FacultyLeave(models.Model):
         if not self.env.user.has_group('faculty_management.group_faculty_admin'):
             raise ValidationError("Only faculty admins can reject leave requests.")
         self.write({'state': 'rejected'})
+    
+    def action_refresh(self):
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
